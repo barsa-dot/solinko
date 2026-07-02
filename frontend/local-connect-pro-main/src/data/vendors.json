@@ -1,0 +1,23 @@
+[
+  {
+    "id": "v1",
+    "name": "Sharma Electricals",
+    "category": "Electrical",
+    "rating": 4.7,
+    "location": "Bangalore",
+    "verified": true,
+    "jobsCompleted": 132,
+    "description": "Commercial electrical contractor"
+  },
+
+  {
+    "id": "v2",
+    "name": "Urban Plumbers",
+    "category": "Plumbing",
+    "rating": 4.5,
+    "location": "Mysore",
+    "verified": true,
+    "jobsCompleted": 89,
+    "description": "Residential plumbing services"
+  }
+]

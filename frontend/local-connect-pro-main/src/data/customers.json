@@ -1,0 +1,15 @@
+[
+  {
+    "id": "c1",
+    "name": "Rahul Mehta",
+    "company": "RM Builders",
+    "location": "Bangalore"
+  },
+
+  {
+    "id": "c2",
+    "name": "Priya Constructions",
+    "company": "Priya Infra",
+    "location": "Mangalore"
+  }
+]
