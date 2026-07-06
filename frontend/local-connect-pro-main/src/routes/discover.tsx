@@ -31,6 +31,7 @@ function DiscoverPage() {
   const [selectedCity, setSelectedCity] = useState("");
   const [selectedRating, setSelectedRating] = useState("");
   const [verifiedOnly, setVerifiedOnly] = useState(false);
+  const [sortBy, setSortBy] = useState("top-rated");
 
   useEffect(() => {
     const loadData = async () => {
@@ -75,7 +76,25 @@ function DiscoverPage() {
 
       return matchCat && matchQ && matchCity && matchRating && matchVerified;
     });
-  }, [active, allVendors, search, selectedCity, selectedRating, verifiedOnly]);
+
+    return matches.sort((a, b) => {
+      if (sortBy === "most-reviewed") {
+        return (b.reviewCount ?? b.jobsCompleted ?? 0) - (a.reviewCount ?? a.jobsCompleted ?? 0);
+      }
+
+      if (sortBy === "newest") {
+        const aId = Number.parseInt(String(a.id).replace(/\D/g, ""), 10) || 0;
+        const bId = Number.parseInt(String(b.id).replace(/\D/g, ""), 10) || 0;
+        return bId - aId;
+      }
+
+      if (sortBy === "alphabetical") {
+        return a.name.localeCompare(b.name);
+      }
+
+      return (b.rating ?? 0) - (a.rating ?? 0);
+    });
+  }, [active, allVendors, search, selectedCity, selectedRating, sortBy, verifiedOnly]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -122,6 +141,17 @@ function DiscoverPage() {
               <option value="3">⭐ 3+</option>
             </select>
 
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="rounded-xl border border-border bg-surface px-4 py-2 text-sm text-ink focus:outline-none focus:border-ink transition-colors"
+            >
+              <option value="top-rated">Top Rated</option>
+              <option value="most-reviewed">Most Reviewed</option>
+              <option value="newest">Newest</option>
+              <option value="alphabetical">Alphabetical</option>
+            </select>
+
             <label className="flex items-center gap-2 rounded-xl border border-border bg-surface px-4 py-2 text-sm text-ink">
               <input
                 type="checkbox"
@@ -138,6 +168,7 @@ function DiscoverPage() {
                 setSelectedCity("");
                 setSelectedRating("");
                 setVerifiedOnly(false);
+                setSortBy("top-rated");
                 setActive("All");
               }}
               className="rounded-xl border border-border px-6 py-2 text-sm"
