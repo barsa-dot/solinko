@@ -5,7 +5,7 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { VendorCard } from "@/components/VendorCard";
 import { type VendorCategory, type Vendor } from "@/data/vendors";
-import { fetchVendors, fetchCategories, searchVendors, filterVendors } from "@/services/fakeApi";
+import { fetchVendors, fetchCategories } from "@/services/fakeApi";
 import { Reveal } from "@/components/Reveal";
 
 export const Route = createFileRoute("/discover")({
@@ -29,7 +29,6 @@ function DiscoverPage() {
 
   const [search, setSearch] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
-  const [selectedRating, setSelectedRating] = useState("");
 
   useEffect(() => {
     const loadData = async () => {
@@ -51,42 +50,28 @@ function DiscoverPage() {
     loadData();
   }, []);
 
-  const handleSearch = async () => {
-    try {
-      const data = await searchVendors(search);
-      setVendors(data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const handleFilter = async () => {
-    try {
-      const data = await filterVendors(
-        selectedCity,
-        selectedRating
-          ? Number(selectedRating)
-          : undefined
-      );
-
-      setVendors(data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   const filtered = useMemo(() => {
-    return vendors.filter((v) => {
-      const matchCat = active === "All" || v.category === active;
-      const q = query.trim().toLowerCase();
-      const matchQ =
-        !q ||
-        v.name.toLowerCase().includes(q) ||
-        v.tagline.toLowerCase().includes(q) ||
-        v.city.toLowerCase().includes(q);
-      return matchCat && matchQ;
+    const q = search.trim().toLowerCase();
+
+    return allVendors.filter((vendor) => {
+      const matchCat = active === "All" || vendor.category === active;
+      const searchableText = [
+        vendor.name,
+        vendor.category,
+        vendor.tagline,
+        vendor.city,
+        vendor.description,
+        ...(vendor.services || []),
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+      const matchQ = !q || searchableText.includes(q);
+      const matchCity = !selectedCity || [vendor.city, vendor.location, vendor.area].includes(selectedCity);
+
+      return matchCat && matchQ && matchCity;
     });
-  }, [query, active, vendors]);
+  }, [active, allVendors, search, selectedCity]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -108,13 +93,6 @@ function DiscoverPage() {
             />
           </div>
 
-          <button
-            onClick={handleSearch}
-            className="max-w-xl rounded-xl bg-ink text-primary-foreground px-6 py-2 text-sm font-medium hover:opacity-90 transition-opacity"
-          >
-            Search
-          </button>
-
           <div className="max-w-xl flex flex-col gap-2">
             <select
               value={selectedCity}
@@ -129,31 +107,10 @@ function DiscoverPage() {
               ))}
             </select>
 
-            <select
-              value={selectedRating}
-              onChange={(e) => setSelectedRating(e.target.value)}
-              className="rounded-xl border border-border bg-surface px-4 py-2 text-sm text-ink focus:outline-none focus:border-ink transition-colors"
-            >
-              <option value="">All Ratings</option>
-              <option value="4">4+ Stars</option>
-              <option value="3">3+ Stars</option>
-              <option value="2">2+ Stars</option>
-              <option value="1">1+ Stars</option>
-            </select>
-
-            <button
-              onClick={handleFilter}
-              className="rounded-xl bg-ink text-primary-foreground px-6 py-2 text-sm font-medium hover:opacity-90 transition-opacity"
-            >
-              Apply Filters
-            </button>
-
             <button
               onClick={() => {
-                setVendors(allVendors);
                 setSearch("");
                 setSelectedCity("");
-                setSelectedRating("");
                 setActive("All");
               }}
               className="rounded-xl border border-border px-6 py-2 text-sm"
