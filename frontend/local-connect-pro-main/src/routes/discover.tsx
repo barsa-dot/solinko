@@ -30,6 +30,7 @@ function DiscoverPage() {
   const [search, setSearch] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
   const [selectedRating, setSelectedRating] = useState("");
+  const [verifiedOnly, setVerifiedOnly] = useState(false);
 
   useEffect(() => {
     const loadData = async () => {
@@ -70,10 +71,11 @@ function DiscoverPage() {
       const matchQ = !q || searchableText.includes(q);
       const matchCity = !selectedCity || [vendor.city, vendor.location, vendor.area].includes(selectedCity);
       const matchRating = !selectedRating || vendor.rating >= Number(selectedRating);
+      const matchVerified = !verifiedOnly || vendor.verified;
 
-      return matchCat && matchQ && matchCity && matchRating;
+      return matchCat && matchQ && matchCity && matchRating && matchVerified;
     });
-  }, [active, allVendors, search, selectedCity, selectedRating]);
+  }, [active, allVendors, search, selectedCity, selectedRating, verifiedOnly]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -120,11 +122,22 @@ function DiscoverPage() {
               <option value="3">⭐ 3+</option>
             </select>
 
+            <label className="flex items-center gap-2 rounded-xl border border-border bg-surface px-4 py-2 text-sm text-ink">
+              <input
+                type="checkbox"
+                checked={verifiedOnly}
+                onChange={(e) => setVerifiedOnly(e.target.checked)}
+                className="h-4 w-4 rounded border-border text-ink focus:ring-ink"
+              />
+              Verified Vendors Only
+            </label>
+
             <button
               onClick={() => {
                 setSearch("");
                 setSelectedCity("");
                 setSelectedRating("");
+                setVerifiedOnly(false);
                 setActive("All");
               }}
               className="rounded-xl border border-border px-6 py-2 text-sm"
