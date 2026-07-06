@@ -29,6 +29,7 @@ function DiscoverPage() {
 
   const [search, setSearch] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
+  const [selectedRating, setSelectedRating] = useState("");
 
   useEffect(() => {
     const loadData = async () => {
@@ -68,10 +69,11 @@ function DiscoverPage() {
         .toLowerCase();
       const matchQ = !q || searchableText.includes(q);
       const matchCity = !selectedCity || [vendor.city, vendor.location, vendor.area].includes(selectedCity);
+      const matchRating = !selectedRating || vendor.rating >= Number(selectedRating);
 
-      return matchCat && matchQ && matchCity;
+      return matchCat && matchQ && matchCity && matchRating;
     });
-  }, [active, allVendors, search, selectedCity]);
+  }, [active, allVendors, search, selectedCity, selectedRating]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -107,10 +109,22 @@ function DiscoverPage() {
               ))}
             </select>
 
+            <select
+              value={selectedRating}
+              onChange={(e) => setSelectedRating(e.target.value)}
+              className="rounded-xl border border-border bg-surface px-4 py-2 text-sm text-ink focus:outline-none focus:border-ink transition-colors"
+            >
+              <option value="">All Ratings</option>
+              <option value="4.5">⭐ 4.5+</option>
+              <option value="4">⭐ 4+</option>
+              <option value="3">⭐ 3+</option>
+            </select>
+
             <button
               onClick={() => {
                 setSearch("");
                 setSelectedCity("");
+                setSelectedRating("");
                 setActive("All");
               }}
               className="rounded-xl border border-border px-6 py-2 text-sm"
