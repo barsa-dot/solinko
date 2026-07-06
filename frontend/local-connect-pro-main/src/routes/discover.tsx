@@ -209,7 +209,9 @@ function DiscoverPage() {
           </div>
         ) : filtered.length === 0 ? (
           <div className="rounded-2xl border border-dashed border-border bg-surface p-12 text-center text-muted-foreground">
-            No vendors match that search yet.
+            <div className="text-4xl">😔</div>
+            <p className="mt-3 font-medium text-ink">No vendors found.</p>
+            <p className="mt-2">Try changing your filters.</p>
           </div>
         ) : (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
