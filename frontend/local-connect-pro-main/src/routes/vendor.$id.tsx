@@ -4,6 +4,8 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { type Vendor } from "@/data/vendors";
 import { fetchVendor } from "@/services/fakeApi";
+// 1. IMPORT ADDED HERE
+import { BusinessHours } from "@/components/BusinessHours";
 
 export const Route = createFileRoute("/vendor/$id")({
   loader: async ({ params }) => {
@@ -89,6 +91,11 @@ function VendorPage() {
           <p className="mt-8 text-base text-foreground/90 leading-relaxed max-w-2xl text-pretty">
             {vendor.description}
           </p>
+
+          {/* 2. PLACED THE NEW COMPONENT DIRECTLY UNDER THE OVERVIEW DESCRIPTION */}
+          <div className="mt-8 max-w-2xl">
+            <BusinessHours businessHours={vendor.businessHours} />
+          </div>
 
           <div className="mt-12">
             <div className="text-xs uppercase tracking-widest text-muted-foreground">
