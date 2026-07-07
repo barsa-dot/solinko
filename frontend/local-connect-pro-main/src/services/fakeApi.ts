@@ -28,8 +28,21 @@ export async function fetchVendors(): Promise<Vendor[]> {
   return apiGet<Vendor[]>("/vendors");
 }
 
+// UPDATED: Fetches data from SQLite backend and parses snake_case to frontend camelCase structures
 export async function fetchVendor(id: string): Promise<Vendor> {
-  return apiGet<Vendor>(`/vendors/${id}`);
+  const data = await apiGet<any>(`/vendors/${id}`);
+  
+  return {
+    ...data,
+    // Map SQLite database snake_case columns to the frontend's expected camelCase properties
+    experience: data.experience,
+    jobsCompleted: data.jobs_completed ?? data.jobsCompleted,
+    responseTime: data.response_time ?? data.responseTime,
+    
+    // Safely parse JSON strings if SQLite returns them as string text fields
+    languages: typeof data.languages === 'string' ? JSON.parse(data.languages) : data.languages,
+    businessHours: typeof data.business_hours === 'string' ? JSON.parse(data.business_hours) : (data.businessHours ?? data.business_hours)
+  };
 }
 
 export async function fetchCategories(): Promise<VendorCategory[]> {
