@@ -1,5 +1,5 @@
 // Adjust this import path if needed to match where your existing Accordion is located!
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/Accordion";
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 
 interface VendorFaqSectionProps {
   businessName: string;
