@@ -42,7 +42,8 @@ export async function fetchVendor(id: string): Promise<Vendor> {
     // Safely parse JSON strings if SQLite returns them as string text fields
     languages: typeof data.languages === 'string' ? JSON.parse(data.languages) : data.languages,
     businessHours: typeof data.business_hours === 'string' ? JSON.parse(data.business_hours) : (data.businessHours ?? data.business_hours),
-    services: typeof data.services === 'string' ? JSON.parse(data.services) : (data.services ?? [])
+    services: typeof data.services === 'string' ? JSON.parse(data.services) : (data.services ?? []),
+    portfolio: typeof data.portfolio === 'string' ? JSON.parse(data.portfolio) : (data.portfolio ?? [])
   };
 }
 
