@@ -6,8 +6,11 @@
     "rating": 4.7,
     "location": "Bangalore",
     "verified": true,
-    "jobsCompleted": 132,
+    "jobsCompleted": 186,
     "description": "Commercial electrical contractor",
+    "experience": 12,
+    "responseTime": "< 30 mins",
+    "languages": ["English", "Hindi", "Kannada"],
     "businessHours": {
       "monday": "9:00 AM - 6:00 PM",
       "tuesday": "9:00 AM - 6:00 PM",
@@ -27,6 +30,9 @@
     "verified": true,
     "jobsCompleted": 89,
     "description": "Residential plumbing services",
+    "experience": 5,
+    "responseTime": "< 30 mins",
+    "languages": ["English", "Hindi"],
     "businessHours": {
       "monday": "9:00 AM - 6:00 PM",
       "tuesday": "9:00 AM - 6:00 PM",

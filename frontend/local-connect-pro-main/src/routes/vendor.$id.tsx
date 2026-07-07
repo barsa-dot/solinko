@@ -4,8 +4,10 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { type Vendor } from "@/data/vendors";
 import { fetchVendor } from "@/services/fakeApi";
-// 1. IMPORT ADDED HERE
+
+// 1. UPDATED IMPORTS (Using clean default imports)
 import { BusinessHours } from "@/components/BusinessHours";
+import { BusinessHighlights } from "@/components/BusinessHighlights";
 
 export const Route = createFileRoute("/vendor/$id")({
   loader: async ({ params }) => {
@@ -68,12 +70,22 @@ function VendorPage() {
               alt={vendor.name}
               className="h-20 w-20 md:h-24 md:w-24 rounded-2xl object-cover border border-border shadow-soft -mt-16 md:-mt-20 bg-surface"
             />
-            <div className="pt-1">
+            <div className="pt-1 w-full">
               <div className="text-xs uppercase tracking-widest text-muted-foreground">
                 {vendor.category}
               </div>
               <h1 className="mt-1 font-display text-3xl md:text-4xl text-ink">{vendor.name}</h1>
-              <div className="mt-2 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+              
+              {/* 2. PLACED BUSINESS HIGHLIGHTS DIRECTLY BELOW H1 */}
+              <BusinessHighlights 
+                verified={vendor.verified}
+                experience={vendor.experience}
+                jobsCompleted={vendor.jobsCompleted}
+                responseTime={vendor.responseTime}
+                languages={vendor.languages}
+              />
+
+              <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
                 <span className="inline-flex items-center gap-1.5">
                   <Star className="h-4 w-4 fill-accent text-accent" />
                   {vendor.rating} <span className="text-muted-foreground/70">({vendor.reviewCount})</span>
@@ -92,7 +104,7 @@ function VendorPage() {
             {vendor.description}
           </p>
 
-          {/* 2. PLACED THE NEW COMPONENT DIRECTLY UNDER THE OVERVIEW DESCRIPTION */}
+          {/* 3. PLACED BUSINESS HOURS DIRECTLY BELOW DESCRIPTION */}
           <div className="mt-8 max-w-2xl">
             <BusinessHours businessHours={vendor.businessHours} />
           </div>
